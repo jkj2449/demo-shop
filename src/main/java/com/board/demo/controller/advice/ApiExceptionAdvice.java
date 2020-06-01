@@ -1,5 +1,6 @@
 package com.board.demo.controller.advice;
 
+import com.board.demo.dto.ApiExceptionResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -12,9 +13,9 @@ public class ApiExceptionAdvice {
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler({Exception.class})
-    public String exceptionHandle(Exception e) {
-        log.error("Api Exception", e.getMessage(), e);
-        return e.getMessage();
+    public ApiExceptionResponse<?> exceptionHandle(Exception e) {
+        log.error("Api Exception > message = {}", e.getMessage(), e);
+        return new ApiExceptionResponse<Void>(e.getMessage());
     }
 
 }
