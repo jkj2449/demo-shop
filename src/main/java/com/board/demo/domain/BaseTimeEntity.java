@@ -16,19 +16,19 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseTimeEntity {
-    @CreatedBy
     @Column(nullable = false)
+    @CreatedBy
     private String createdBy;
 
-    @LastModifiedBy
     @Column(nullable = false)
+    @LastModifiedBy
     private String modifiedBy;
 
-    @CreatedDate
     @Column(nullable = false)
+    @CreatedDate
     private LocalDateTime createdDate;
 
-    @LastModifiedDate
     @Column(nullable = false)
+    @LastModifiedDate
     private LocalDateTime modifiedDate;
 }

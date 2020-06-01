@@ -19,6 +19,6 @@ public class SecurityAuditorAware implements AuditorAware<String> {
             return Optional.empty();
         }
         Account account = (Account)authentication.getPrincipal();
-        return Optional.ofNullable(account.getEmail());
+        return Optional.of(account.getEmail());
     }
 }
