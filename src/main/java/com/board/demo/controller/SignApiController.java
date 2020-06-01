@@ -18,9 +18,9 @@ public class SignApiController {
     private final AccountService accountService;
 
     // 로그인
-    @PostMapping("/api/v1/singIn")
+    @PostMapping("/api/v1/signIn")
     public AccountSingInResponseDto signIn(@RequestBody AccountSignInRequestDto requestDto) {
-        return  accountService.signIn(requestDto);
+        return accountService.signIn(requestDto);
     }
 
     @PostMapping("/api/v1/signUp")
