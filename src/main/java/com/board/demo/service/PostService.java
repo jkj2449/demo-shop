@@ -1,5 +1,6 @@
 package com.board.demo.service;
 
+import com.board.demo.common.AccountProvider;
 import com.board.demo.domain.post.Post;
 import com.board.demo.domain.post.PostRepository;
 import com.board.demo.dto.post.PostListResponseDto;
@@ -28,6 +29,10 @@ public class PostService {
     public Long update(Long id, PostUpdateRequestDto requestDto) {
         Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
 
+        if(AccountProvider.getAccount().getEmail().equals(post.getCreatedBy())) {
+            throw new IllegalArgumentException("해당 게시글 수정 권한이 없습니다.");
+        }
+
         post.update(requestDto.getTitle(), requestDto.getContent());
 
         return id;
@@ -49,6 +54,10 @@ public class PostService {
     @Transactional
     public void delete(Long id) {
         Post post = postRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 게시글이 없습니다. id=" + id));
+
+        if(AccountProvider.getAccount().getEmail().equals(post.getCreatedBy())) {
+            throw new IllegalArgumentException("해당 게시글 삭제 권한이 없습니다.");
+        }
 
         postRepository.delete(post);
     }
