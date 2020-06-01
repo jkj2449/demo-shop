@@ -28,8 +28,6 @@ public final class JwtTokenProvider {
 
     // JWT 토큰 생성
     public static String createToken(UserClaims userClaims) {
-//        Claims claims = Jwts.claims().setSubject(email); // JWT payload 에 저장되는 정보단위
-//        claims.put("roles", roles);
         Date now = new Date();
         return Jwts.builder()
                 .claim(USER_KEY, userClaims) // 정보 저장
@@ -57,6 +55,7 @@ public final class JwtTokenProvider {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
+            log.error("not valid token ", e);
             return false;
         }
     }

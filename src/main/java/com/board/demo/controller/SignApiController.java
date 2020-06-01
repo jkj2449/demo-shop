@@ -13,17 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/sign")
-public class SignController {
+@RequestMapping
+public class SignApiController {
     private final AccountService accountService;
 
     // 로그인
-    @PostMapping("/in")
+    @PostMapping("/api/v1/singIn")
     public AccountSingInResponseDto signIn(@RequestBody AccountSignInRequestDto requestDto) {
         return  accountService.signIn(requestDto);
     }
 
-    @PostMapping("/up")
+    @PostMapping("/api/v1/signUp")
     public ResponseEntity<Void> signUp(@RequestBody AccountSignUpRequestDto requestDto) {
         accountService.signUp(requestDto);
         return ResponseEntity.ok().build();

@@ -1,6 +1,6 @@
 package com.board.demo.service;
 
-import com.board.demo.common.Role;
+import com.board.demo.domain.account.Role;
 import com.board.demo.common.security.JwtTokenProvider;
 import com.board.demo.domain.account.Account;
 import com.board.demo.domain.account.AccountRepository;
@@ -20,6 +20,7 @@ public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Transactional
     public AccountSingInResponseDto signIn(AccountSignInRequestDto requestDto) {
         Account account = accountRepository.findByEmail(requestDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 email이 없습니다."));
