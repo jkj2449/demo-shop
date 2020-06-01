@@ -8,12 +8,10 @@ import com.board.demo.dto.post.PostResponseDto;
 import com.board.demo.dto.post.PostSaveRequestDto;
 import com.board.demo.dto.post.PostUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -46,9 +44,8 @@ public class PostService {
     }
 
     @Transactional(readOnly = true)
-    public List<PostListResponseDto> findAllDesc(Pageable pageable) {
-        return postRepository.findAllDesc(pageable).stream()
-                .map(PostListResponseDto::new).collect(Collectors.toList());
+    public Page<PostListResponseDto> findAll(Pageable pageable) {
+        return postRepository.findAll(pageable).map(PostListResponseDto::new);
     }
 
     @Transactional

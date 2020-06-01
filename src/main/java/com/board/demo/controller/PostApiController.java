@@ -1,11 +1,14 @@
 package com.board.demo.controller;
 
 import com.board.demo.domain.account.Role;
+import com.board.demo.dto.post.PostListResponseDto;
 import com.board.demo.dto.post.PostResponseDto;
 import com.board.demo.dto.post.PostSaveRequestDto;
 import com.board.demo.dto.post.PostUpdateRequestDto;
 import com.board.demo.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +33,11 @@ public class PostApiController {
     @GetMapping("/api/v1/post/{id}")
     public PostResponseDto findById(@PathVariable Long id) {
         return postService.findById(id);
+    }
+
+    @GetMapping("/api/v1/post")
+    public Page<PostListResponseDto> findById(Pageable pageable) {
+        return postService.findAll(pageable);
     }
 
     @Secured(Role.RoleProperties.ROLE_USER)
