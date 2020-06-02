@@ -46,7 +46,7 @@ public final class JwtTokenProvider {
 
     // Request의 Header에서 token 값
     public static String resolveToken(HttpServletRequest request) {
-        return request.getHeader(JwtProperties.HEADER_STRING);
+        return request.getHeader(JwtProperties.HEADER_AUTHORIZATION);
     }
 
     // 토큰의 유효성 + 만료일자 확인
@@ -64,7 +64,7 @@ public final class JwtTokenProvider {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
 
         String token = JwtTokenProvider.createToken(MAPPER.convertValue(account, UserClaims.class));
-        Objects.requireNonNull(response).addHeader(JwtProperties.HEADER_STRING, token);
+        Objects.requireNonNull(response).addHeader(JwtProperties.HEADER_AUTHORIZATION, token);
     }
 
     @Getter
