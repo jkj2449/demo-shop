@@ -2,11 +2,11 @@ package com.shop.demo.service;
 
 import com.shop.demo.domain.account.Role;
 import com.shop.demo.common.security.JwtTokenProvider;
-import com.shop.demo.domain.account.Account;
-import com.shop.demo.domain.account.AccountRepository;
-import com.shop.demo.dto.account.AccountSignInRequestDto;
-import com.shop.demo.dto.account.AccountSignUpRequestDto;
-import com.shop.demo.dto.account.AccountSingInResponseDto;
+import com.shop.demo.domain.account.Member;
+import com.shop.demo.domain.account.MemberRepository;
+import com.shop.demo.dto.member.MemberSignInRequestDto;
+import com.shop.demo.dto.member.MemberSignUpRequestDto;
+import com.shop.demo.dto.member.MemberSingInResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,44 +16,44 @@ import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
-public class AccountService implements UserDetailsService {
-    private final AccountRepository accountRepository;
+public class MemberService implements UserDetailsService {
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public AccountSingInResponseDto signIn(AccountSignInRequestDto requestDto) {
-        Account account = accountRepository.findByEmail(requestDto.getEmail())
+    public MemberSingInResponseDto signIn(MemberSignInRequestDto requestDto) {
+        Member member = memberRepository.findByEmail(requestDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 email이 없습니다."));
 
-        if (!passwordEncoder.matches(requestDto.getPassword(), account.getPassword())) {
+        if (!passwordEncoder.matches(requestDto.getPassword(), member.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
-        JwtTokenProvider.setTokenInHeader(account);
+        JwtTokenProvider.setTokenInHeader(member);
 
-        return AccountSingInResponseDto.builder()
-                .account(account)
+        return MemberSingInResponseDto.builder()
+                .member(member)
                 .build();
     }
 
     @Override
-    public Account loadUserByUsername(String email) throws UsernameNotFoundException {
-        Account account = accountRepository.findByEmail(email)
+    public Member loadUserByUsername(String email) throws UsernameNotFoundException {
+        Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 email이 없습니다."));;
 
-        return account;
+        return member;
     }
 
     @Transactional
-    public void signUp(AccountSignUpRequestDto requestDto) {
-        Account account = Account.builder()
+    public void signUp(MemberSignUpRequestDto requestDto) {
+        Member member = Member.builder()
                 .email(requestDto.getEmail())
                 .username(requestDto.getUsername())
                 .password(requestDto.getPassword())
                 .role(Role.USER.getRole())
                 .build();
 
-        account.encodePassword(passwordEncoder);
-        accountRepository.save(account);
+        member.encodePassword(passwordEncoder);
+        memberRepository.save(member);
     }
 }

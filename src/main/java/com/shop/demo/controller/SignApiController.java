@@ -1,9 +1,9 @@
 package com.shop.demo.controller;
 
-import com.shop.demo.dto.account.AccountSignInRequestDto;
-import com.shop.demo.dto.account.AccountSignUpRequestDto;
-import com.shop.demo.dto.account.AccountSingInResponseDto;
-import com.shop.demo.service.AccountService;
+import com.shop.demo.dto.member.MemberSignInRequestDto;
+import com.shop.demo.dto.member.MemberSignUpRequestDto;
+import com.shop.demo.dto.member.MemberSingInResponseDto;
+import com.shop.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,17 +15,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping
 public class SignApiController {
-    private final AccountService accountService;
+    private final MemberService memberService;
 
     // 로그인
     @PostMapping("/api/v1/signIn")
-    public AccountSingInResponseDto signIn(@RequestBody AccountSignInRequestDto requestDto) {
-        return accountService.signIn(requestDto);
+    public MemberSingInResponseDto signIn(@RequestBody MemberSignInRequestDto requestDto) {
+        return memberService.signIn(requestDto);
     }
 
     @PostMapping("/api/v1/signUp")
-    public ResponseEntity<Void> signUp(@RequestBody AccountSignUpRequestDto requestDto) {
-        accountService.signUp(requestDto);
+    public ResponseEntity<Void> signUp(@RequestBody MemberSignUpRequestDto requestDto) {
+        memberService.signUp(requestDto);
         return ResponseEntity.ok().build();
     }
 

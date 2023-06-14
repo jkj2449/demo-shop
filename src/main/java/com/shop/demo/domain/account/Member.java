@@ -17,7 +17,7 @@ import java.util.Collections;
 @Setter
 @Getter
 @Entity
-public class Account implements UserDetails {
+public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,7 +34,7 @@ public class Account implements UserDetails {
     private String role;
 
     @Builder
-    public Account(String email, String username, String password, String role) {
+    public Member(String email, String username, String password, String role) {
         this.email = email;
         this.username = username;
         this.password = password;

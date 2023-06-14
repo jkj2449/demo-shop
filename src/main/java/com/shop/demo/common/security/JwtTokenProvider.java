@@ -1,6 +1,6 @@
 package com.shop.demo.common.security;
 
-import com.shop.demo.domain.account.Account;
+import com.shop.demo.domain.account.Member;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
@@ -60,10 +60,10 @@ public final class JwtTokenProvider {
         }
     }
 
-    public static void setTokenInHeader(Account account) {
+    public static void setTokenInHeader(Member member) {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
 
-        String token = JwtTokenProvider.createToken(MAPPER.convertValue(account, UserClaims.class));
+        String token = JwtTokenProvider.createToken(MAPPER.convertValue(member, UserClaims.class));
         Objects.requireNonNull(response).addHeader(JwtProperties.HEADER_AUTHORIZATION, token);
     }
 
