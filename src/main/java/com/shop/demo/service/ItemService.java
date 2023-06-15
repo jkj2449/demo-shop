@@ -5,7 +5,10 @@ import com.shop.demo.domain.item.ItemRepository;
 import com.shop.demo.dto.item.ItemListResponseDto;
 import com.shop.demo.dto.item.ItemResponseDto;
 import com.shop.demo.dto.item.ItemSaveRequestDto;
+import com.shop.demo.dto.review.ReviewListResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -32,5 +35,9 @@ public class ItemService {
                 .stream()
                 .map(item -> ItemListResponseDto.builder().entity(item).build())
                 .collect(Collectors.toList());
+    }
+
+    public Page<ItemListResponseDto> findAll(Pageable pageable) {
+        return itemRepository.findAll(pageable).map(ItemListResponseDto::new);
     }
 }

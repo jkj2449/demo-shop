@@ -35,7 +35,7 @@ public class ReviewApiController {
         return reviewService.findById(id);
     }
 
-    @GetMapping("/api/v1/review")
+    @GetMapping("/api/v1/reviews")
     public Page<ReviewListResponseDto> findById(Pageable pageable) {
         return reviewService.findAll(pageable);
     }
