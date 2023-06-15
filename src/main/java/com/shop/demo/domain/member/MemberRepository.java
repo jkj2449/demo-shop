@@ -1,4 +1,4 @@
-package com.shop.demo.domain.account;
+package com.shop.demo.domain.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,6 +1,6 @@
 package com.shop.demo.common.jpa;
 
-import com.shop.demo.domain.account.Member;
+import com.shop.demo.domain.member.Member;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;

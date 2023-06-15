@@ -1,6 +1,6 @@
 package com.shop.demo.controller;
 
-import com.shop.demo.domain.account.Role;
+import com.shop.demo.domain.member.Role;
 import com.shop.demo.dto.review.ReviewListResponseDto;
 import com.shop.demo.dto.review.ReviewResponseDto;
 import com.shop.demo.dto.review.ReviewSaveRequestDto;

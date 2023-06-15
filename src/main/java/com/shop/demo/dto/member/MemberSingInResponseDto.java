@@ -1,6 +1,6 @@
 package com.shop.demo.dto.member;
 
-import com.shop.demo.domain.account.Member;
+import com.shop.demo.domain.member.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

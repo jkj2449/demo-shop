@@ -1,4 +1,4 @@
-package com.shop.demo.domain.account;
+package com.shop.demo.domain.member;
 
 //@Component
 //@RequiredArgsConstructor

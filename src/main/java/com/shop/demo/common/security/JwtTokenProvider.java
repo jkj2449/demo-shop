@@ -1,6 +1,6 @@
 package com.shop.demo.common.security;
 
-import com.shop.demo.domain.account.Member;
+import com.shop.demo.domain.member.Member;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;

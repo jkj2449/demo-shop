@@ -1,9 +1,9 @@
 package com.shop.demo.service;
 
-import com.shop.demo.domain.account.Role;
+import com.shop.demo.domain.member.Role;
 import com.shop.demo.common.security.JwtTokenProvider;
-import com.shop.demo.domain.account.Member;
-import com.shop.demo.domain.account.MemberRepository;
+import com.shop.demo.domain.member.Member;
+import com.shop.demo.domain.member.MemberRepository;
 import com.shop.demo.dto.member.MemberSignInRequestDto;
 import com.shop.demo.dto.member.MemberSignUpRequestDto;
 import com.shop.demo.dto.member.MemberSingInResponseDto;
@@ -46,6 +46,10 @@ public class MemberService implements UserDetailsService {
 
     @Transactional
     public void signUp(MemberSignUpRequestDto requestDto) {
+        if(!requestDto.isMatchedPasswordConfirm()) {
+            throw new IllegalArgumentException("패스워드 확인이 패스워드와 불일치");
+        }
+
         Member member = Member.builder()
                 .email(requestDto.getEmail())
                 .username(requestDto.getUsername())
