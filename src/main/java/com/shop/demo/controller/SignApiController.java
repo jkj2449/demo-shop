@@ -1,6 +1,7 @@
 package com.shop.demo.controller;
 
 import com.shop.demo.dto.member.MemberSignInRequestDto;
+import com.shop.demo.dto.member.MemberSignOutRequestDto;
 import com.shop.demo.dto.member.MemberSignUpRequestDto;
 import com.shop.demo.dto.member.MemberSingInResponseDto;
 import com.shop.demo.service.MemberService;
@@ -19,13 +20,19 @@ public class SignApiController {
 
     // 로그인
     @PostMapping("/api/v1/signIn")
-    public MemberSingInResponseDto signIn(@RequestBody MemberSignInRequestDto requestDto) {
+    public MemberSingInResponseDto signIn(@RequestBody final MemberSignInRequestDto requestDto) {
         return memberService.signIn(requestDto);
     }
 
     @PostMapping("/api/v1/signUp")
-    public ResponseEntity<Void> signUp(@RequestBody MemberSignUpRequestDto requestDto) {
+    public ResponseEntity<Void> signUp(@RequestBody final MemberSignUpRequestDto requestDto) {
         memberService.signUp(requestDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/api/v1/signOut")
+    public ResponseEntity<Void> signOut(@RequestBody final MemberSignOutRequestDto requestDto) {
+        memberService.signOut(requestDto);
         return ResponseEntity.ok().build();
     }
 

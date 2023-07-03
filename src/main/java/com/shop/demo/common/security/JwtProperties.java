@@ -1,7 +1,14 @@
 package com.shop.demo.common.security;
 
+import java.time.Duration;
+
 public final class JwtProperties {
-    public static final String SECRET = "secret_key";
-    public static final long EXPIRATION_TIME = 30 * 60 * 1000L;
-    public static final String HEADER_AUTHORIZATION = "Authorization";
+    public static final String SECRET_KEY = "secret_key";
+    public static final long ACCESS_TOKEN_EXPIRATION_TIME = Duration.ofSeconds(15).toMillis();
+    public static final long REFRESH_TOKEN_EXPIRATION_TIME = Duration.ofSeconds(30).toMillis();
+    public static final String HEADER_AUTHORIZATION_KEY = "Authorization";
+    public static final String ACCESS_TOKEN_KEY = "access";
+    public static final String REFRESH_TOKEN_KEY = "refresh";
+
+
 }

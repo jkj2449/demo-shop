@@ -1,10 +1,12 @@
 package com.shop.demo.service;
 
-import com.shop.demo.domain.member.Role;
 import com.shop.demo.common.security.JwtTokenProvider;
+import com.shop.demo.common.security.Token;
 import com.shop.demo.domain.member.Member;
 import com.shop.demo.domain.member.MemberRepository;
+import com.shop.demo.domain.member.Role;
 import com.shop.demo.dto.member.MemberSignInRequestDto;
+import com.shop.demo.dto.member.MemberSignOutRequestDto;
 import com.shop.demo.dto.member.MemberSignUpRequestDto;
 import com.shop.demo.dto.member.MemberSingInResponseDto;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService implements UserDetailsService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
-    public MemberSingInResponseDto signIn(MemberSignInRequestDto requestDto) {
+    public MemberSingInResponseDto signIn(final MemberSignInRequestDto requestDto) {
         Member member = memberRepository.findByEmail(requestDto.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 email이 없습니다."));
 
@@ -29,7 +32,9 @@ public class MemberService implements UserDetailsService {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
-        JwtTokenProvider.setTokenInHeader(member);
+
+        Token token = jwtTokenProvider.createToken(member);
+        jwtTokenProvider.setTokenInHeaderAndCookie(token);
 
         return MemberSingInResponseDto.builder()
                 .member(member)
@@ -37,16 +42,17 @@ public class MemberService implements UserDetailsService {
     }
 
     @Override
-    public Member loadUserByUsername(String email) throws UsernameNotFoundException {
+    public Member loadUserByUsername(final String email) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("일치하는 email이 없습니다."));;
+                .orElseThrow(() -> new IllegalArgumentException("일치하는 email이 없습니다."));
+        ;
 
         return member;
     }
 
     @Transactional
-    public void signUp(MemberSignUpRequestDto requestDto) {
-        if(!requestDto.isMatchedPasswordConfirm()) {
+    public void signUp(final MemberSignUpRequestDto requestDto) {
+        if (!requestDto.isMatchedPasswordConfirm()) {
             throw new IllegalArgumentException("패스워드 확인이 패스워드와 불일치");
         }
 
@@ -59,5 +65,9 @@ public class MemberService implements UserDetailsService {
 
         member.encodePassword(passwordEncoder);
         memberRepository.save(member);
+    }
+
+    public void signOut(final MemberSignOutRequestDto requestDto) {
+        jwtTokenProvider.deleteRefreshToken(requestDto.getEmail());
     }
 }

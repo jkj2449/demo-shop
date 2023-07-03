@@ -6,13 +6,11 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
-public class MemberSignInRequestDto {
+public class MemberSignOutRequestDto {
     private String email;
-    private String password;
 
     @Builder
-    public MemberSignInRequestDto(String email, String password) {
+    public MemberSignOutRequestDto(String email) {
         this.email = email;
-        this.password = password;
     }
 }
