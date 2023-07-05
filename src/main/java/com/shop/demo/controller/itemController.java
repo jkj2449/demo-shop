@@ -18,9 +18,9 @@ public class itemController {
 //    public List<ItemListResponseDto> find() {
 //        return itemService.findAll();
 //    }
-    
+
     @GetMapping("/api/v1/items")
-    public Page<ItemListResponseDto> findById(@PageableDefault Pageable pageable) {
+    public Page<ItemListResponseDto> findAll(@PageableDefault Pageable pageable) {
         return itemService.findAll(pageable);
     }
 }

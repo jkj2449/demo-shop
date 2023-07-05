@@ -14,13 +14,12 @@ import lombok.Setter;
 public class CartListResponseDto {
     private Long id;
     private Long memberId;
-    private Long itemId;
     private ItemResponseDto item;
 
     @Builder
     public CartListResponseDto(Cart entity) {
         this.id = entity.getId();
         this.memberId = entity.getMemberId();
-        this.itemId = entity.getItemId();
+        this.item = new ItemResponseDto(entity.getItem());
     }
 }

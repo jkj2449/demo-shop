@@ -1,6 +1,6 @@
 package com.shop.demo.service;
 
-import com.shop.demo.common.AccountProvider;
+import com.shop.demo.common.SecurityContextProvider;
 import com.shop.demo.domain.review.Review;
 import com.shop.demo.domain.review.ReviewRepository;
 import com.shop.demo.dto.review.ReviewListResponseDto;
@@ -27,7 +27,7 @@ public class ReviewService {
     public Long update(Long id, ReviewUpdateRequestDto requestDto) {
         Review post = reviewRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 상품평 없습니다. id=" + id));
 
-        if(AccountProvider.getAccount().getEmail().equals(post.getCreatedBy())) {
+        if (SecurityContextProvider.getMember().getEmail().equals(post.getCreatedBy())) {
             throw new IllegalArgumentException("해당 상품평 수정 권한이 없습니다.");
         }
 
@@ -50,7 +50,7 @@ public class ReviewService {
     public void delete(Long id) {
         Review review = reviewRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 상품평 없습니다. id=" + id));
 
-        if(AccountProvider.getAccount().getEmail().equals(review.getCreatedBy())) {
+        if (SecurityContextProvider.getMember().getEmail().equals(review.getCreatedBy())) {
             throw new IllegalArgumentException("해당 상품평 삭제 권한이 없습니다.");
         }
 

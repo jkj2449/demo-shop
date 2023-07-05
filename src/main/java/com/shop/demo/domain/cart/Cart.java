@@ -1,5 +1,6 @@
 package com.shop.demo.domain.cart;
 
+import com.shop.demo.domain.item.Item;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,12 +21,13 @@ public class Cart {
     @Column
     private Long memberId;
 
-    @Column
-    private Long itemId;
+    @OneToOne
+    @JoinColumn(name = "itemId")
+    private Item item;
 
     @Builder
-    public Cart(Long memberId, Long itemId) {
+    public Cart(Long memberId, Item item) {
         this.memberId = memberId;
-        this.itemId = itemId;
+        this.item = item;
     }
 }

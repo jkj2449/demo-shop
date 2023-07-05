@@ -1,6 +1,5 @@
 package com.shop.demo.domain.item;
 
-import com.shop.demo.domain.review.Review;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
