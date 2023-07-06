@@ -43,7 +43,7 @@ class SignApiControllerTest {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(context)
                 .build();
 
-        String email = "test@test.co.kr";
+        String email = "test1@test.co.kr";
         String username = "test";
         String password = "1234";
 
@@ -57,7 +57,7 @@ class SignApiControllerTest {
 
     @Test
     public void 회원가입된다() throws Exception {
-        String email = "test1@test.co.kr";
+        String email = "test2@test.co.kr";
         String username = "test";
         String password = "1234";
         String passwordConfirm = "1234";
@@ -80,7 +80,7 @@ class SignApiControllerTest {
 
     @Test
     public void 패스워드와_패스워드_확인이_불일치_하다() throws Exception {
-        String email = "test@test.co.kr";
+        String email = "test2@test.co.kr";
         String username = "test";
         String password = "1234";
         String passwordConfirm = "124";
@@ -103,7 +103,7 @@ class SignApiControllerTest {
 
     @Test
     public void 로그인_된다() throws Exception {
-        String email = "test@test.co.kr";
+        String email = "test1@test.co.kr";
         String password = "1234";
 
         MemberSignInRequestDto requestDto = MemberSignInRequestDto.builder()
@@ -124,12 +124,12 @@ class SignApiControllerTest {
 
     @Test
     public void 로그아웃_된다() throws Exception {
-        String email = "test@test.co.kr";
+        String email = "test1@test.co.kr";
 
         MemberSignOutRequestDto requestDto = MemberSignOutRequestDto.builder()
                 .email(email)
                 .build();
-        
+
         String url = "/api/v1/signOut";
 
         mockMvc.perform(post(url)

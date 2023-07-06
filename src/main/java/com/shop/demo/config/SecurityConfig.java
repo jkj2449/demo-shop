@@ -2,7 +2,6 @@ package com.shop.demo.config;
 
 import com.shop.demo.common.security.JwtTokenProvider;
 import com.shop.demo.filter.JwtAuthenticationFilter;
-import com.shop.demo.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +22,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    private final MemberService memberService;
     private final JwtTokenProvider jwtTokenProvider;
 
     private SecurityExpressionHandler<FilterInvocation> expressionHandler() {
@@ -46,11 +44,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers("/h2-console/**", "/api/v1/signIn", "/api/v1/signUp", "/api/v1/items").permitAll()
+                .antMatchers("/h2-console/**", "/api/v1/signIn", "/api/v1/signUp", "/api/v1/refresh", "/api/v1/items").permitAll()
                 .anyRequest().authenticated()
                 .expressionHandler(expressionHandler())
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, memberService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

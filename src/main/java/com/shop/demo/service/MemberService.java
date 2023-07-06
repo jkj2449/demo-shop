@@ -1,7 +1,6 @@
 package com.shop.demo.service;
 
 import com.shop.demo.common.security.JwtTokenProvider;
-import com.shop.demo.common.security.Token;
 import com.shop.demo.domain.member.Member;
 import com.shop.demo.domain.member.MemberRepository;
 import com.shop.demo.domain.member.Role;
@@ -32,9 +31,7 @@ public class MemberService implements UserDetailsService {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
 
-
-        Token token = jwtTokenProvider.createToken(member);
-        jwtTokenProvider.setTokenInHeaderAndCookie(token);
+        jwtTokenProvider.createNewToken(member);
 
         return MemberSingInResponseDto.builder()
                 .member(member)
@@ -45,7 +42,6 @@ public class MemberService implements UserDetailsService {
     public Member loadUserByUsername(final String email) throws UsernameNotFoundException {
         Member member = memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 email이 없습니다."));
-        ;
 
         return member;
     }

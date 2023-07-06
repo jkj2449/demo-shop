@@ -1,9 +1,10 @@
 package com.shop.demo.filter;
 
+import com.shop.demo.common.security.JwtProperties;
 import com.shop.demo.common.security.JwtTokenProvider;
 import com.shop.demo.common.security.Token;
 import com.shop.demo.domain.member.Member;
-import com.shop.demo.service.MemberService;
+import com.shop.demo.exception.JwtTokenNotValidException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,39 +16,39 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 
 @Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
-    private final MemberService memberService;
+    private static final String[] excludePath = {"/api/v1/signIn", "/api/v1/signUp", "/api/v1/refresh"};
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Token token = jwtTokenProvider.resolveToken(request);
-
         try {
-            if (token.getAccessToken() != null && jwtTokenProvider.isValidAccessToken(token.getAccessToken())) {
-                this.setAuthentication(token.getAccessToken());
+            Token token = jwtTokenProvider.createValidToken(request);
+            this.setAuthentication(token);
 
-            } else if (token.getRefreshToken() != null && jwtTokenProvider.isValidRefreshToken(token.getRefreshToken())) {
-                String email = jwtTokenProvider.getEmail(token.getRefreshToken());
-                Member member = memberService.loadUserByUsername(email);
-
-                Token newToken = jwtTokenProvider.createToken(member);
-                jwtTokenProvider.setTokenInHeaderAndCookie(newToken);
-
-                this.setAuthentication(newToken.getAccessToken());
-            }
+        } catch (JwtTokenNotValidException e) {
+            log.info("jwt not invalid", e);
         } catch (Exception e) {
-            log.error("jwt token check error: {}", e.getMessage());
+            log.error("JwtAuthenticationFilter error", e);
+            response.setHeader("error", e.getMessage());
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
 
         filterChain.doFilter(request, response);
     }
 
-    private void setAuthentication(String token) {
-        Member member = jwtTokenProvider.toMember(token);
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        String path = request.getRequestURI();
+        return Arrays.stream(excludePath).filter(v -> v.equals(path)).findAny().isPresent();
+    }
+
+    private void setAuthentication(Token token) {
+        Member member = token.toMember(token.getAccessToken(), JwtProperties.ACCESS_TOKEN_KEY);
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(member, "", member.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
     }

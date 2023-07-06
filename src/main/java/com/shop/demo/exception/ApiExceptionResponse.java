@@ -1,4 +1,4 @@
-package com.shop.demo.dto;
+package com.shop.demo.exception;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
