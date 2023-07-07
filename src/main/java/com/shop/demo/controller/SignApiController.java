@@ -15,8 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping
@@ -27,8 +25,7 @@ public class SignApiController {
     // 로그인
     @PostMapping("/api/v1/signIn")
     public MemberSingInResponseDto signIn(@RequestBody final MemberSignInRequestDto requestDto) {
-        MemberSingInResponseDto responseDto = memberService.signIn(requestDto);
-        return responseDto;
+        return memberService.signIn(requestDto);
     }
 
     @PostMapping("/api/v1/signUp")
@@ -44,9 +41,9 @@ public class SignApiController {
     }
 
     @GetMapping("/api/v1/refresh")
-    public ResponseEntity<MemberSingInResponseDto> refresh(HttpServletRequest request) {
+    public ResponseEntity<MemberSingInResponseDto> refresh() {
         try {
-            Token token = jwtTokenProvider.createValidToken(request);
+            Token token = jwtTokenProvider.createValidToken();
             Member member = token.toMember(token.getAccessToken(), JwtProperties.ACCESS_TOKEN_KEY);
             return new ResponseEntity<>(new MemberSingInResponseDto(member), HttpStatus.OK);
         } catch (JwtTokenNotValidException e) {

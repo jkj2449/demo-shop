@@ -1,8 +1,9 @@
 package com.shop.demo.dto.cart;
 
+import com.querydsl.core.annotations.QueryProjection;
 import com.shop.demo.domain.cart.Cart;
+import com.shop.demo.domain.item.Item;
 import com.shop.demo.dto.item.ItemResponseDto;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,10 +17,10 @@ public class CartListResponseDto {
     private Long memberId;
     private ItemResponseDto item;
 
-    @Builder
-    public CartListResponseDto(Cart entity) {
-        this.id = entity.getId();
-        this.memberId = entity.getMemberId();
-        this.item = new ItemResponseDto(entity.getItem());
+    @QueryProjection
+    public CartListResponseDto(Cart cart, Item item) {
+        this.id = cart.getId();
+        this.memberId = cart.getMemberId();
+        this.item = new ItemResponseDto(item);
     }
 }

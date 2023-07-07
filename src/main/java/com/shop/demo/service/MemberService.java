@@ -10,7 +10,6 @@ import com.shop.demo.dto.member.MemberSignUpRequestDto;
 import com.shop.demo.dto.member.MemberSingInResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,11 +38,9 @@ public class MemberService implements UserDetailsService {
     }
 
     @Override
-    public Member loadUserByUsername(final String email) throws UsernameNotFoundException {
-        Member member = memberRepository.findByEmail(email)
+    public Member loadUserByUsername(final String email) {
+        return memberRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("일치하는 email이 없습니다."));
-
-        return member;
     }
 
     @Transactional

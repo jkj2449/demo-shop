@@ -52,9 +52,7 @@ public class Token {
 
     public Member toMember(final String token, final String tokenKey) {
         Jws<Claims> claims = Jwts.parser().setSigningKey(ENCODE_SECRET_KEY).parseClaimsJws(token);
-        Member member = MAPPER.convertValue(claims.getBody().get(tokenKey), Member.class);
-
-        return member;
+        return MAPPER.convertValue(claims.getBody().get(tokenKey), Member.class);
     }
 
     public static String createToken(final Member member, final String tokenKey, long expirationTime) {

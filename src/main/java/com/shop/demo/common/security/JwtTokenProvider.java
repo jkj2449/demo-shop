@@ -2,6 +2,7 @@ package com.shop.demo.common.security;
 
 import com.shop.demo.domain.member.Member;
 import com.shop.demo.exception.JwtTokenNotValidException;
+import com.shop.demo.util.RequestContextProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -27,7 +28,8 @@ import static com.shop.demo.common.security.JwtProperties.*;
 public final class JwtTokenProvider {
     private final RedisTemplate<String, String> redisTemplate;
 
-    public Token createValidToken(final HttpServletRequest request) {
+    public Token createValidToken() {
+        HttpServletRequest request = RequestContextProvider.getHttpServletRequest();
         Token token = this.resolveToken(request);
 
         if (token.isValidToken(token.getAccessToken())) {
@@ -61,7 +63,7 @@ public final class JwtTokenProvider {
     }
 
     private void deleteRefreshTokenCookie() {
-        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
+        HttpServletResponse response = RequestContextProvider.getHttpServletResponse();
 
         Cookie cookie = new Cookie(REFRESH_TOKEN_KEY, null);
         cookie.setHttpOnly(true);
